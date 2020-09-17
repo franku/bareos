@@ -1233,7 +1233,7 @@ def read_all_clients(
     
     Needs at least Bareos Version >= 20.0.0
     """
-    return show_configuration_items(response=response, current_user=current_user, itemType="client", verbose=verbose)
+    return show_configuration_items(response=response, current_user=current_user, itemType="clients", verbose=verbose)
 
 @app.get("/configuration/clients/{clients_name}", tags=["clients", "configuration"])
 def read_client_by_name(
@@ -1244,7 +1244,7 @@ def read_client_by_name(
 
     Needs at least Bareos Version >= 20.0.0
     """
-    return show_configuration_items(response=response, current_user=current_user, itemType="client", byName=clients_name, verbose=verbose)
+    return show_configuration_items(response=response, current_user=current_user, itemType="clients", byName=clients_name, verbose=verbose)
 
 
 @app.post("/configuration/clients", tags=["clients", "configuration"])
@@ -1272,7 +1272,7 @@ def read_all_filesets(
     
     Needs at least Bareos Version >= 20.0.0
     """
-    return show_configuration_items(response=response, current_user=current_user, itemType="fileset", verbose=verbose)
+    return show_configuration_items(response=response, current_user=current_user, itemType="filesets", verbose=verbose)
 
 @app.get("/configuration/filesets/{filesets_name}", tags=["filesets", "configuration"])
 def read_fileset_by_name(
@@ -1283,7 +1283,7 @@ def read_fileset_by_name(
 
     Needs at least Bareos Version >= 20.0.0
     """
-    return show_configuration_items(response=response, current_user=current_user, itemType="fileset", byName=filesets_name, verbose=verbose)
+    return show_configuration_items(response=response, current_user=current_user, itemType="filesets", byName=filesets_name, verbose=verbose)
 
 
 #### Job Control
@@ -1724,7 +1724,7 @@ def read_all_jobs(
     
     Needs at least Bareos Version >= 20.0.0
     """
-    return show_configuration_items(response=response, current_user=current_user, itemType="job", verbose=verbose)
+    return show_configuration_items(response=response, current_user=current_user, itemType="jobs", verbose=verbose)
 
 @app.get("/configuration/jobs/{jobs_name}", tags=["jobs", "configuration"])
 def read_job_by_name(
@@ -1735,7 +1735,7 @@ def read_job_by_name(
 
     Needs at least Bareos Version >= 20.0.0
     """
-    return show_configuration_items(response=response, current_user=current_user, itemType="job", byName=jobs_name, verbose=verbose)
+    return show_configuration_items(response=response, current_user=current_user, itemType="jobs", byName=jobs_name, verbose=verbose)
 
 
 
@@ -2109,7 +2109,7 @@ def read_all_pools(
     
     Needs at least Bareos Version >= 20.0.0
     """
-    return show_configuration_items(response=response, current_user=current_user, itemType="pool", verbose=verbose)
+    return show_configuration_items(response=response, current_user=current_user, itemType="pools", verbose=verbose)
 
 @app.get("/configuration/pools/{pools_name}", tags=["pools", "configuration"])
 def read_pool_by_name(
@@ -2120,7 +2120,7 @@ def read_pool_by_name(
 
     Needs at least Bareos Version >= 20.0.0
     """
-    return show_configuration_items(response=response, current_user=current_user, itemType="pool", byName=pools_name, verbose=verbose)
+    return show_configuration_items(response=response, current_user=current_user, itemType="pools", byName=pools_name, verbose=verbose)
 
 
 
@@ -2217,7 +2217,7 @@ def read_all_schedules(
     
     Needs at least Bareos Version >= 20.0.0
     """
-    return show_configuration_items(response=response, current_user=current_user, itemType="schedule", verbose=verbose)
+    return show_configuration_items(response=response, current_user=current_user, itemType="schedules", verbose=verbose)
 
 @app.get("/configuration/schedules/{schedules_name}", tags=["schedules", "configuration"])
 def read_schedule_by_name(
@@ -2228,7 +2228,7 @@ def read_schedule_by_name(
 
     Needs at least Bareos Version >= 20.0.0
     """
-    return show_configuration_items(response=response, current_user=current_user, itemType="schedule", byName=schedules_name, verbose=verbose)
+    return show_configuration_items(response=response, current_user=current_user, itemType="schedules", byName=schedules_name, verbose=verbose)
 
 @app.post("/configuration/schedules", tags=["schedules", "configuration"])
 def create_schedule(
@@ -2311,7 +2311,7 @@ def read_all_storages(
     
     Needs at least Bareos Version >= 20.0.0
     """
-    return show_configuration_items(response=response, current_user=current_user, itemType="storage", verbose=verbose)
+    return show_configuration_items(response=response, current_user=current_user, itemType="storages", verbose=verbose)
 
 @app.get("/configuration/storages/{storages_name}", tags=["storages", "configuration"])
 def read_storage_by_name(
@@ -2322,7 +2322,7 @@ def read_storage_by_name(
 
     Needs at least Bareos Version >= 20.0.0
     """
-    return show_configuration_items(response=response, current_user=current_user, itemType="storage", byName=storages_name, verbose=verbose)
+    return show_configuration_items(response=response, current_user=current_user, itemType="storages", byName=storages_name, verbose=verbose)
 
 
 
@@ -2401,7 +2401,7 @@ def read_all_users(
     
     Needs at least Bareos Version >= 20.0.0
     """
-    return show_configuration_items(response=response, current_user=current_user, itemType="user", verbose=verbose)
+    return show_configuration_items(response=response, current_user=current_user, itemType="users", verbose=verbose)
 
 @app.get("/configuration/users/{users_name}", tags=["users", "configuration"])
 def read_user_by_name(
@@ -2412,7 +2412,7 @@ def read_user_by_name(
 
     Needs at least Bareos Version >= 20.0.0
     """
-    return show_configuration_items(response=response, current_user=current_user, itemType="user", byName=users_name, verbose=verbose)
+    return show_configuration_items(response=response, current_user=current_user, itemType="users", byName=users_name, verbose=verbose)
 
 
 
@@ -2445,7 +2445,7 @@ def read_all_profiles(
     
     Needs at least Bareos Version >= 20.0.0
     """
-    return show_configuration_items(response=response, current_user=current_user, itemType="profile", verbose=verbose)
+    return show_configuration_items(response=response, current_user=current_user, itemType="profiles", verbose=verbose)
 
 @app.get("/configuration/profiles/{profiles_name}", tags=["profiles", "configuration"])
 def read_client_by_name(
@@ -2456,7 +2456,7 @@ def read_client_by_name(
 
     Needs at least Bareos Version >= 20.0.0
     """
-    return show_configuration_items(response=response, current_user=current_user, itemType="profile", byName=profiles_name, verbose=verbose)
+    return show_configuration_items(response=response, current_user=current_user, itemType="profiles", byName=profiles_name, verbose=verbose)
 
 
 
@@ -2489,7 +2489,7 @@ def read_all_consoles(
     
     Needs at least Bareos Version >= 20.0.0
     """
-    return show_configuration_items(response=response, current_user=current_user, itemType="console", verbose=verbose)
+    return show_configuration_items(response=response, current_user=current_user, itemType="consoles", verbose=verbose)
 
 @app.get("/configuration/consoles/{consoles_name}", tags=["consoles", "configuration"])
 def read_console_by_name(
@@ -2500,7 +2500,7 @@ def read_console_by_name(
 
     Needs at least Bareos Version >= 20.0.0
     """
-    return show_configuration_items(response=response, current_user=current_user, itemType="console", byName=consoles_name, verbose=verbose)
+    return show_configuration_items(response=response, current_user=current_user, itemType="consoles", byName=consoles_name, verbose=verbose)
 
 
 

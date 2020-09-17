@@ -1,5 +1,5 @@
 #!/bin/bash
-uvicorn main:app --port @restapi_port@ &
+uvicorn main:app --port @restapi_port@ > ../log/bareos-restapi.log 2>&1 &
 PID=$!
 echo @restapi_port@ > api.port
 echo $PID > api.pid

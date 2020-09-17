@@ -30,6 +30,19 @@ start_test
 start_bareos
 
 #run_python_unittests "$@"
+function endpoint_check {
+# $1: method
+# $2: endpoint-url
+# $3: string to grep for
+# $4: extra curl options
+url="http://127.0.0.1:@restapi_port@/$2"
+curl -X $1 $url -H "accept: application/json" -H  "Authorization: Bearer $TOKEN" "$4" | grep -q $3
+
+if [ $? -ne 0 ]
+  then echo "error getting endpoint $2 with method $1"
+  exit 1
+fi
+}
 ## place api tests here
 ## TODO: error handling / make sure api gets stopped
 cd api
@@ -37,8 +50,28 @@ cd api
 sleep 3
 echo "api started"
 TOKEN=`curl -X POST "http://127.0.0.1:@restapi_port@/token" -H  "accept: application/json" -H  "Content-Type: application/x-www-form-urlencoded" -d "grant_type=&username=admin-notls&password=secret&scope=&client_id=&client_secret=" | grep access_token | cut -d '"' -f 4`
-echo $TOKEN
-curl -X GET "http://127.0.0.1:@restapi_port@/configuration/clients" -H  "accept: application/json" -H  "Authorization: Bearer $TOKEN" | grep bareos-fd
+#echo $TOKEN
+endpoint_check GET "configuration/clients" bareos-fd ""
+endpoint_check GET "configuration/clients/bareos-fd" bareos-fd ""
+endpoint_check GET "configuration/jobs" backup-bareos-fd ""
+endpoint_check GET "configuration/jobs/backup-bareos-fd" backup-bareos-fd ""
+endpoint_check GET "configuration/filesets" SelfTest ""
+endpoint_check GET "configuration/filesets/SelfTest" SelfTest ""
+endpoint_check GET "configuration/jobdefs" DefaultJob ""
+endpoint_check GET "configuration/jobdefs/DefaultJob" DefaultJob ""
+endpoint_check GET "configuration/pools" Full ""
+endpoint_check GET "configuration/pools/Full" Full ""
+#endpoint_check GET "configuration/schedules" 
+endpoint_check GET "configuration/storages" FileStorage  ""
+#endpoint_check GET "configuration/storages/filestorage" FileStorage  ""
+endpoint_check GET "configuration/consoles" admin-notls  ""
+endpoint_check GET "configuration/consoles/admin-notls" admin-notls  ""
+endpoint_check GET "configuration/profiles" operator  ""
+endpoint_check GET "configuration/profiles/operator" operator  ""
+endpoint_check GET "configuration/profiles" operator  ""
+endpoint_check GET "configuration/profiles/operator" operator  ""
+endpoint_check POST "configuration/clients" "newClient" "-d {\"name\":\"newClient\",\"address\": \"127.0.0.1\", \"password\": \"string\"}"
+
 ./stopapi.sh
 cd -
 
