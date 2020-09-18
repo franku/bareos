@@ -36,7 +36,7 @@ function endpoint_check {
 # $3: string to grep for
 # $4: extra curl options
 url="http://127.0.0.1:@restapi_port@/$2"
-curl -X $1 $url -H "accept: application/json" -H  "Authorization: Bearer $TOKEN" "$4" | grep -q $3
+curl -s -X $1 $url -H "accept: application/json" -H  "Authorization: Bearer $TOKEN" "$4" | grep -q "$3"
 
 if [ $? -ne 0 ]
   then echo "error getting endpoint $2 with method $1"
@@ -45,14 +45,18 @@ fi
 }
 ## place api tests here
 ## TODO: error handling / make sure api gets stopped
+mkdir -p etc/bareos/bareos-dir.d/schedule
+mkdir -p etc/bareos/bareos-dir.d/user
 cd api
 ./startapi.sh
 sleep 3
 echo "api started"
 TOKEN=`curl -X POST "http://127.0.0.1:@restapi_port@/token" -H  "accept: application/json" -H  "Content-Type: application/x-www-form-urlencoded" -d "grant_type=&username=admin-notls&password=secret&scope=&client_id=&client_secret=" | grep access_token | cut -d '"' -f 4`
 #echo $TOKEN
-endpoint_check GET "configuration/clients" bareos-fd ""
+# TODO: complete endpoint checks with POST / GET for all possible resources
+endpoint_check POST "configuration/clients" newClient "-d {\"name\":\"newClient\",\"address\": \"127.0.0.1\", \"password\": \"string\"}"
 endpoint_check GET "configuration/clients/bareos-fd" bareos-fd ""
+endpoint_check GET "configuration/clients" newClient ""
 endpoint_check GET "configuration/jobs" backup-bareos-fd ""
 endpoint_check GET "configuration/jobs/backup-bareos-fd" backup-bareos-fd ""
 endpoint_check GET "configuration/filesets" SelfTest ""
@@ -61,21 +65,33 @@ endpoint_check GET "configuration/jobdefs" DefaultJob ""
 endpoint_check GET "configuration/jobdefs/DefaultJob" DefaultJob ""
 endpoint_check GET "configuration/pools" Full ""
 endpoint_check GET "configuration/pools/Full" Full ""
-#endpoint_check GET "configuration/schedules" 
-endpoint_check GET "configuration/storages" FileStorage  ""
-#endpoint_check GET "configuration/storages/filestorage" FileStorage  ""
+endpoint_check POST "configuration/schedules" mysched "-d {\"name\":\"mysched\",\"enabled\":\"no\"}"
+endpoint_check GET "configuration/schedules" mysched ""
+endpoint_check GET "configuration/storages" File  ""
+endpoint_check GET "configuration/storages/File" File  ""
 endpoint_check GET "configuration/consoles" admin-notls  ""
 endpoint_check GET "configuration/consoles/admin-notls" admin-notls  ""
 endpoint_check GET "configuration/profiles" operator  ""
 endpoint_check GET "configuration/profiles/operator" operator  ""
 endpoint_check GET "configuration/profiles" operator  ""
 endpoint_check GET "configuration/profiles/operator" operator  ""
-endpoint_check POST "configuration/clients" "newClient" "-d {\"name\":\"newClient\",\"address\": \"127.0.0.1\", \"password\": \"string\"}"
+endpoint_check POST "configuration/users" string "-d {\"name\":\"myuser\",\"description\":\"string\"}"
+endpoint_check GET "configuration/users" myuser  ""
+endpoint_check GET "configuration/users/myuser" myuser  ""
+endpoint_check GET "control/clients" bareos-fd ""
+endpoint_check GET "control/clients/1" test2-fd ""
+# no text result for this endpoint - need to adapt test function for this case
+#endpoint_check GET "control/clients/disable/bareos-fd" "" ""
+#endpoint_check GET "control/clients/enable/bareos-fd" "" ""
+endpoint_check PUT "control/jobs/run" jobid "-d {\"jobControl\":{\"job\":\"backup-bareos-fd\"}}"
+# try non-existing job
+endpoint_check GET "control/jobs/26544" "not found" ""
+endpoint_check GET "control/jobs/1" "jobstatus" ""
 
 ./stopapi.sh
 cd -
 
-check_for_zombie_jobs storage=File client=bareos-fd
+#check_for_zombie_jobs storage=File client=bareos-fd
 
 stop_bareos
 

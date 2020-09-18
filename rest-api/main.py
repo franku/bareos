@@ -962,6 +962,7 @@ def configure_add_standard_component(
             "message": "Could not add %s with command '%s'. Message: '%s'"
             % (componentType, addCommand, e)
         }
+    
     if "configure" in result and "add" in result["configure"]:
         return result
     else:
@@ -1157,7 +1158,7 @@ def read_catalog_info_for_particular_client(
     **Warning** Director does not support direct query by _id_ we query all clients and filter the result.
     Maybe more time consuming than expected in large settings.
     """
-    allClients = read_all_clients(response, current_user)
+    allClients = read_catalog_info_for_all_clients(response, current_user)
     result = None
     for c in allClients["clients"]:
         if c["clientid"] == str(client_id):
@@ -2345,51 +2346,6 @@ def post_storage(
     )
 
 
-### devices
-@app.post("/configuration/device", tags=["devices", "configuration"])
-def post_device(
-    *,
-    deviceDef: deviceResource = Body(..., title="device resource"),
-    response: Response,
-    current_user: User = Depends(get_current_user),
-):
-    """
-    Create a new device resource.
-    Console command used: _configure add device_
-
-    **WARNING**: crashes director on Bareos versions < 20
-    """
-    response.status_code = 501
-    return {"message": "Not implemented yet (crashing Director)"}
-
-    addCommand = "configure add device"
-    deviceDict = deviceDef.dict()
-
-    for a in deviceDict:
-        if deviceDict[a] is not None:
-            addCommand += " %s=%s" % (
-                a,
-                str(deviceDict[a]).strip("[]").replace("'", "").replace(" ", ""),
-            )
-    #print(addCommand)
-    try:
-        result = current_user.jsonDirector.call(addCommand)
-    except Exception as e:
-        response.status_code = 500
-        return {
-            "message": "Could not add device with command '%s' on director %s. Message: '%s'"
-            % (addCommand, current_user.directorName, e)
-        }
-    if "configure" in result and "add" in result["configure"]:
-        return result
-    else:
-        response.status_code = 500
-        return {
-            "message": "Could not add device with command '%s' on director %s. Message: '%s'"
-            % (addCommand, current_user.directorName, e)
-        }
-
-
 ### Users, profiles, consoles
 
 @app.get("/configuration/users", tags=["users", "configuration"])
@@ -2397,7 +2353,7 @@ def read_all_users(
     *, response: Response, current_user: User = Depends(get_current_user), verbose: Optional[bareosBool] = Query("yes", title="Verbose output")
 ):
     """
-    Read all jobdef resources. Built on console command _show users_.
+    Read all users resources. Built on console command _show users_.
     
     Needs at least Bareos Version >= 20.0.0
     """
