@@ -36,6 +36,7 @@ function endpoint_check {
 # $3: string to grep for
 # $4: extra curl options
 url="http://127.0.0.1:@restapi_port@/$2"
+echo "curl -s -X $1 $url -H " >> ${tmp}/curl.statements.log
 curl -s -X $1 $url -H "accept: application/json" -H  "Authorization: Bearer $TOKEN" "$4" | grep -q "$3"
 
 if [ $? -ne 0 ]
@@ -87,6 +88,24 @@ endpoint_check PUT "control/jobs/run" jobid "-d {\"jobControl\":{\"job\":\"backu
 # try non-existing job
 endpoint_check GET "control/jobs/26544" "not found" ""
 endpoint_check GET "control/jobs/1" "jobstatus" ""
+endpoint_check GET "control/jobs/totals" "jobs" ""
+endpoint_check GET "control/jobs" "jobs" ""
+endpoint_check GET "control/jobs/logs/1" "joblog" ""
+endpoint_check GET "control/jobs/files/1" "filenames" ""
+endpoint_check DELETE "control/jobs/1" "deleted" ""
+endpoint_check DELETE "control/jobs/63535" "No job" ""
+endpoint_check GET "control/volumes" "volumes" ""
+# POST / label: empty response
+#endpoint_check POST "control/volumes" "volumes" "-d {\"volume\":\"Full-1743\",\"pool\":\"Full\",\"storage\":\"File\"}"
+# We have no volumes at this point for now, activate later
+#endpoint_check GET "control/volumes/1" "mediaid"
+endpoint_check GET "control/volumes/188" "No volume" ""
+endpoint_check GET "control/pools" "pools" ""
+endpoint_check GET "control/pools/1" "poolid" ""
+endpoint_check GET "users/me/" "username" ""
+endpoint_check GET "control/directors/version" "bareos-dir" ""
+endpoint_check GET "control/directors/time" "year" ""
+endpoint_check PUT "control/directors/reload" "success" ""
 
 ./stopapi.sh
 cd -
