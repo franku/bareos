@@ -52,7 +52,7 @@ cd api
 ./startapi.sh
 sleep 3
 echo "api started"
-TOKEN=`curl -X POST "http://127.0.0.1:@restapi_port@/token" -H  "accept: application/json" -H  "Content-Type: application/x-www-form-urlencoded" -d "grant_type=&username=admin-notls&password=secret&scope=&client_id=&client_secret=" | grep access_token | cut -d '"' -f 4`
+TOKEN=`curl -X POST "http://127.0.0.1:@restapi_port@/token" -H  "accept: application/json" -H  "Content-Type: application/x-www-form-urlencoded" -d "grant_type=&username=admin-tls&password=secret&scope=&client_id=&client_secret=" | grep access_token | cut -d '"' -f 4`
 #echo $TOKEN
 # TODO: complete endpoint checks with POST / GET for all possible resources
 endpoint_check POST "configuration/clients" newClient "-d {\"name\":\"newClient\",\"address\": \"127.0.0.1\", \"password\": \"string\"}"
@@ -73,8 +73,8 @@ endpoint_check PUT "control/schedules/disable/mysched" 204 ""
 endpoint_check PUT "control/schedules/enable/mysched" 204 ""
 endpoint_check GET "configuration/storages" File  ""
 endpoint_check GET "configuration/storages/File" File  ""
-endpoint_check GET "configuration/consoles" admin-notls  ""
-endpoint_check GET "configuration/consoles/admin-notls" admin-notls  ""
+endpoint_check GET "configuration/consoles" admin-tls  ""
+endpoint_check GET "configuration/consoles/admin-tls" admin-tls  ""
 endpoint_check GET "configuration/profiles" operator  ""
 endpoint_check GET "configuration/profiles/operator" operator  ""
 endpoint_check GET "configuration/profiles" operator  ""
