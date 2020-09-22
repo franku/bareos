@@ -36,8 +36,8 @@ function endpoint_check {
 # $3: string to grep for
 # $4: extra curl options
 url="http://127.0.0.1:@restapi_port@/$2"
-echo "curl -s -X $1 $url -H " >> ${tmp}/curl.statements.log
-curl -s -X $1 $url -H "accept: application/json" -H  "Authorization: Bearer $TOKEN" "$4" | grep -q "$3"
+echo "curl -w \"\n%{http_code}\n\" -s -X $1 $url -H \"accept: application/json\" -H  \"Authorization: Bearer $TOKEN\" \"$4\" " >> ${tmp}/curl.statements.log
+curl -w "\n%{http_code}\n" -s -X $1 $url -H "accept: application/json" -H  "Authorization: Bearer $TOKEN" "$4" | grep -q "$3"
 
 if [ $? -ne 0 ]
   then echo "error getting endpoint $2 with method $1"
@@ -68,6 +68,9 @@ endpoint_check GET "configuration/pools" Full ""
 endpoint_check GET "configuration/pools/Full" Full ""
 endpoint_check POST "configuration/schedules" mysched "-d {\"name\":\"mysched\",\"enabled\":\"no\"}"
 endpoint_check GET "configuration/schedules" mysched ""
+# On some endpoints director returns empty strings, in this case we grep for http status code 204 (empty document by intention)
+endpoint_check PUT "control/schedules/disable/mysched" 204 ""
+endpoint_check PUT "control/schedules/enable/mysched" 204 ""
 endpoint_check GET "configuration/storages" File  ""
 endpoint_check GET "configuration/storages/File" File  ""
 endpoint_check GET "configuration/consoles" admin-notls  ""
@@ -81,10 +84,12 @@ endpoint_check GET "configuration/users" myuser  ""
 endpoint_check GET "configuration/users/myuser" myuser  ""
 endpoint_check GET "control/clients" bareos-fd ""
 endpoint_check GET "control/clients/1" test2-fd ""
-# no text result for this endpoint - need to adapt test function for this case
-#endpoint_check GET "control/clients/disable/bareos-fd" "" ""
-#endpoint_check GET "control/clients/enable/bareos-fd" "" ""
-endpoint_check PUT "control/jobs/run" jobid "-d {\"jobControl\":{\"job\":\"backup-bareos-fd\"}}"
+endpoint_check PUT "control/clients/disable/bareos-fd" "204" ""
+endpoint_check PUT "control/clients/enable/bareos-fd" "204" ""
+endpoint_check PUT "control/jobs/run" jobid "-d {\"jobControl\":{\"job\":\"backup-bareos-fd\",\"joblevel\":\"Full\"}}"
+endpoint_check PUT "control/jobs/run" jobid "-d {\"jobControl\":{\"job\":\"backup-bareos-fd\",\"joblevel\":\"Full\"}}"
+endpoint_check PUT "control/jobs/cancel/2" 200 ""
+endpoint_check PUT "control/jobs/rerun/2" "jobid" ""
 # try non-existing job
 endpoint_check GET "control/jobs/26544" "not found" ""
 endpoint_check GET "control/jobs/1" "jobstatus" ""
@@ -92,14 +97,15 @@ endpoint_check GET "control/jobs/totals" "jobs" ""
 endpoint_check GET "control/jobs" "jobs" ""
 endpoint_check GET "control/jobs/logs/1" "joblog" ""
 endpoint_check GET "control/jobs/files/1" "filenames" ""
+endpoint_check PUT "control/jobs/restore" "jobid" "-d {\"jobControl\":{\"client\":\"bareos-fd\",\"selectAllDone\":\"yes\"}}"
 endpoint_check DELETE "control/jobs/1" "deleted" ""
 endpoint_check DELETE "control/jobs/63535" "No job" ""
 endpoint_check GET "control/volumes" "volumes" ""
-# POST / label: empty response
-#endpoint_check POST "control/volumes" "volumes" "-d {\"volume\":\"Full-1743\",\"pool\":\"Full\",\"storage\":\"File\"}"
-# We have no volumes at this point for now, activate later
-#endpoint_check GET "control/volumes/1" "mediaid"
+endpoint_check POST "control/volumes" 204 "-d {\"volume\":\"Full-1743\",\"pool\":\"Full\",\"storage\":\"File\"} "
+endpoint_check GET "control/volumes/1" "mediaid" ""
 endpoint_check GET "control/volumes/188" "No volume" ""
+endpoint_check PATCH "control/volumes/Full-1743" "Recycle" "-d {\"pool\":\"Full\",\"volstatus\":\"Recycle\"} "
+endpoint_check PUT "control/volumes/Full-1743" "204" "-d {\"volume\":\"Full-001742\",\"storage\":\"File\",\"pool\":\"Full\",\"encrypt\":\"yes\"} "
 endpoint_check GET "control/pools" "pools" ""
 endpoint_check GET "control/pools/1" "poolid" ""
 endpoint_check GET "users/me/" "username" ""

@@ -117,7 +117,7 @@ class jobStatus(str, Enum):
         return self.name
 
 
-class jobLevel(str, Enum):
+class jobLevelChr(str, Enum):
     """
     Allowed job level chars
     """
@@ -136,6 +136,21 @@ class jobLevel(str, Enum):
     def __str__(self):
         return self.name
 
+class jobLevel(str, Enum):
+    """
+    Allowed job level full description strings
+    """
+    Base = "Base"
+    Full = "Full"
+    Incremental = "Incremental"
+    Differential = "Differential"
+    Since = "Since"
+    VerifyCatalog = "Verify Catalog"
+    InitCatalog = "Init Catalog"
+    VolumetoCatalog = "Volume to Catalog"
+
+    def __str__(self):
+        return self.name
 
 class aclCollection(BaseModel):
     """
@@ -363,7 +378,7 @@ class jobControl(BaseModel):
     fileset: Optional[str] = Field(
         None, title="Fileset to use", example="server-fileset"
     )
-    joblevel: Optional[jobLevel] = Field(None, title="Job level to query", example="F")
+    level: Optional[jobLevel] = Field(None, title="Job level to query", example="Full")
     storage: Optional[str] = Field(None, title="Storage to use")
     when: Optional[str] = Field(
         None, title="When to run job, Bareos universal timespec"
@@ -599,7 +614,7 @@ class jobQuery(BaseModel):
     jobstatus: Optional[jobStatus] = Field(
         None, title="Job status to query", example="T"
     )
-    joblevel: Optional[jobLevel] = Field(None, title="Job level to query", example="F")
+    joblevel: Optional[jobLevelChr] = Field(None, title="Job level to query", example="F")
     volume: Optional[str] = Field(
         None, title="Query jobs on the given volume", example="Full-0017"
     )

@@ -1346,7 +1346,7 @@ def relabel_volume(
     return responseDict
 
 
-@app.delete("/control/volumes/{volume_name}", tags=["volumes", "control"])
+@app.delete("/control/volumes/{volume_name}", status_code=204, tags=["volumes", "control"])
 def delete_volume(
     *,
     response: Response,
@@ -1366,6 +1366,8 @@ def delete_volume(
             "message": "Could not delete volume on director %s. Message: '%s'"
             % (CONFIG_DIRECTOR_NAME, e)
         }
+    # Director delivers empty response
+    response.status_code = 204
     return responseDict
 
 
