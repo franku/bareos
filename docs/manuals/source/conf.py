@@ -83,6 +83,7 @@ extensions = [
     "sphinxcontrib.plantuml",
     "sphinxcontrib.seqdiag",
     "crate.sphinx.csv",
+    "m2r2",
 ]
 
 #    'limitation',
