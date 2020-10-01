@@ -34,5 +34,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 #Fixed
 #Security
 
+[20.2.1]: https://github.com/bareos/bareos/releases/tag/Release%2F20.2.1
 [20.2.2]: https://github.com/bareos/bareos/releases/tag/Release%2F20.2.2
 [unreleased]: https://github.com/bareos/bareos/tree/master
