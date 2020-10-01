@@ -134,6 +134,7 @@ endpoint_check GET "control/jobs" "jobs" "" 1
 endpoint_check GET "control/jobs/logs/1" "joblog" "" 1
 endpoint_check GET "control/jobs/files/1" "filenames" "" 1
 # sometimes Full hasn't finished, we retry until restore works
+sleep 3
 endpoint_check PUT "control/jobs/restore" "jobid" "-d {\"jobControl\":{\"client\":\"bareos-fd\",\"selectAllDone\":\"yes\"}}" 10
 # TODO: loop here until jobid 1 has finished instead of sleep
 # TODO: loop here until jobid 1 has finished instead of sleep
