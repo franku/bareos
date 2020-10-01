@@ -116,23 +116,14 @@ e90483b74 Merge pull request #463 from bareos/dev/arogge/master/add-security-md
 00552802a Merge pull request #457 from bareos/dev/fbergkemper/master/s3462
 56e12f9c9 Merge pull request #456 from bareos/dev/fbergkemper/master/s3905
 9aef75f4a Merge pull request #460 from bareos/dev/fbergkemper/master/s2791
-43b9adcd9 Merge pull request #453 from arogge/dev/arogge/master/TT4200594
-d3ba475cf Merge pull request #454 from bareos/dev/fbergkemper/master/s3431
-3c41877d1 Merge pull request #452 from bareos/dev/fbergkemper/code-refactoring
-54cb434a3 Merge pull request #451 from bareos/dev/pstorz/master/fix-regexwhere-crash
-3c3f50e86 Merge pull request #436 from tuxmaster5000/version
-0762d29e7 Merge pull request #448 from bareos/dev/franku/master/ndmp-log-messages
-f66f14fd9 Merge pull request #445 from bareos/dev/fbergkemper/master/s3435
-eb51625b8 Merge pull request #444 from bareos/dev/fbergkemper/master/improve-filtering-on-jobs-bootstrap-table
-d0dc1d3cb Merge pull request #441 from bareos-testing/master
-714ab306c Merge pull request #443 from arogge/dev/arogge/master/univention-repotemplate
-4d45f3908 Merge pull request #423 from bareos/dev/pstorz/master/ai-prune-problem
-fde43c549 Merge pull request #432 from bareos/dev/franku/master/dbcopy-improvements
-57357bab4 Merge pull request #438 from bareos/dev/fbergkemper/master/webui-fix-restore-form
 
 
 #Fixed
 
+- 43b9adcd9 Fixed a segmentation fault caused by deprecated OpenSSL functions
+- 54cb434a3 Fixes #1211: Bareos director and bareos fd crash when regexwhere is specified
+- 4d45f3908 Always Incremental: Address early prune problem when vol retentions are too small
+- 57357bab4 Fixes #1206: Form field restore job is not populated after client selection
 - 63ba1f5cf Fixes #1192: Authorization key rejected by Storage daemon since upgrading director and storage daemons
 - e7e9368b1 Allow pathlengths of a messages recource to be longer that 128 bytes
 - d0c9765ee Fixes #1190: Schedules without a client will not be run
@@ -147,6 +138,8 @@ fde43c549 Merge pull request #432 from bareos/dev/franku/master/dbcopy-improveme
 
 #Added
 
+- d3ba475cf Pre-fill restore location form element according to selected restore job in webui
+- 0762d29e7 Add more logging messages to NDMP interface
 - d0bcbd00d Add start and finish time in the webui-joblist
 - efc8496b6 Add a database ugrade test
 - cce6df8fb Add recommendation for PHP 7 to documentation
@@ -156,6 +149,7 @@ fde43c549 Merge pull request #432 from bareos/dev/franku/master/dbcopy-improveme
 
 #Changed
 
+- eb51625b8i and f66f14fd9 Improve filtering on webui-jobs-bootstrap-table
 - ee457bb2d Allow systemtets to run on installed packaged
 - e640cd65a Allow systemtests to be run in parallel
 - c13ef6887 Disable systemtests on non compatible systems
