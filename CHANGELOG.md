@@ -19,7 +19,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Fixed typos in Italian translation from [@lorenzo-arena](https://github.com/lorenzo-arena).
 - Fixed typos in Indonesian translation from [@ekojs](https://github.com/ekojs).
 
-## [20.2.2] - 2020-12-15
+## [20.2.1] - 2020-12-15
 
 ### Added
 
