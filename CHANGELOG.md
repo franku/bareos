@@ -104,40 +104,32 @@ ff2d7e82e Merge pull request #486 from bareos/dev/pstorz/master/solaris
 2508c1c19 Merge pull request #477 from bareos/dev/fbergkemper/master/s3667
 73cbe260a Merge pull request #415 from hamazasalah/master
 acfa5c968 Merge pull request #455 from bareos/dev/arogge/master/TT4200617
-f90b9226b Merge pull request #476 from arogge/dev/arogge/master/document-limitations
-39fbbdc54 Merge pull request #468 from bareos/dev/joergs/master/sd-droplet-exit-on-failure
-1d80d3877 Merge pull request #472 from bareos/dev/fbergkemper/master/fix-drive-index-default
-0577bcfab Merge pull request #471 from bareos/dev/fbergkemper/master/s3927
-26f395ee1 Merge pull request #470 from bareos/dev/fbergkemper/master/s3916
-e90483b74 Merge pull request #463 from bareos/dev/arogge/master/add-security-md
-238dc5342 Merge pull request #465 from bareos/dev/franku/master/sd-droplet-exit-if-max_concurrent_jobs-gt-1
-69643660a Merge pull request #469 from bareos/dev/bpoed/master/localization
-65b4c0c44 Merge pull request #466 from bareos/dev/fbergkemper/master/localization-update
-00552802a Merge pull request #457 from bareos/dev/fbergkemper/master/s3462
-56e12f9c9 Merge pull request #456 from bareos/dev/fbergkemper/master/s3905
-9aef75f4a Merge pull request #460 from bareos/dev/fbergkemper/master/s2791
 
 
 #Fixed
 
+- 39fbbdc54 Fixes that droplet is waiting forever if flushing a file fails: [Pull request #468]
+- 1d80d3877 [Fixes #1220]: default drive index not set to 0: [Pull request #472]
 - 43b9adcd9 Fixed a segmentation fault caused by deprecated OpenSSL functions
-- 54cb434a3 Fixes #1211: Bareos director and bareos fd crash when regexwhere is specified
+- 54cb434a3 [Fixes #1211]: Bareos director and bareos fd crash when regexwhere is specified
 - 4d45f3908 Always Incremental: Address early prune problem when vol retentions are too small
-- 57357bab4 Fixes #1206: Form field restore job is not populated after client selection
-- 63ba1f5cf Fixes #1192: Authorization key rejected by Storage daemon since upgrading director and storage daemons
+- 57357bab4 [Fixes #1206]: Form field restore job is not populated after client selection
+- 63ba1f5cf [Fixes #1192]: Authorization key rejected by Storage daemon since upgrading director and storage daemons
 - e7e9368b1 Allow pathlengths of a messages recource to be longer that 128 bytes
-- d0c9765ee Fixes #1190: Schedules without a client will not be run
-- 9af9eb623 Fixes a bug where hourly schedules fail on the general rule without a day
-- 3b6ebeac9 Fixes #1175: bareos crashes with invalid character in ACL
-- cf046c8a2 Fixes #1184: Using syslog or an invalid message type crashes a daemon
-- 29ac88ab6 Fixes #1176: Upgrade 18.2.5 to 19.2.5 failed while upgrading MySQL database
-- 2b58f1715 Fixes #1174: Reversed sort order on the restore client selection
+- d0c9765ee [Fixes #1190]: Schedules without a client will not be run
+- 9af9eb623 [Fixes a bug where hourly schedules fail on the general rule without a day
+- 3b6ebeac9 [Fixes #1175]: bareos crashes with invalid character in ACL
+- cf046c8a2 [Fixes #1184]: Using syslog or an invalid message type crashes a daemon
+- 29ac88ab6 [Fixes #1176]: Upgrade 18.2.5 to 19.2.5 failed while upgrading MySQL database
+- 2b58f1715 [Fixes #1174]: Reversed sort order on the restore client selection
 - a068797a9 Fix errors in client only build
 - bc70185fc Fix checksum algorithm regarding byte order
 - 472ceb9b5 Avoid a race condition in job name creation
 
 #Added
 
+- 56e12f9c9 Pre-fill restore form element "replace" according to selected restore job in the webui: [Pull request #456]
+- 9aef75f4a Add documentation for a critical bscan limitation: [Pull request #460]
 - d3ba475cf Pre-fill restore location form element according to selected restore job in webui
 - 0762d29e7 Add more logging messages to NDMP interface
 - d0bcbd00d Add start and finish time in the webui-joblist
@@ -149,7 +141,11 @@ e90483b74 Merge pull request #463 from bareos/dev/arogge/master/add-security-md
 
 #Changed
 
-- eb51625b8i and f66f14fd9 Improve filtering on webui-jobs-bootstrap-table
+
+- f90b9226b Improve warnings on Maximum Block Size of the droplet backend: [Pull request #476]
+- 0577bcfab Improve the selection of a specific file version restore in the webui: [Pull request #471]
+- 238dc5342 droplet: Only allow configuration maximum concurrent jobs of 0 or 1: [Pull request #465]
+- eb51625b8 and f66f14fd9 Improve filtering on webui-jobs-bootstrap-table
 - ee457bb2d Allow systemtets to run on installed packaged
 - e640cd65a Allow systemtests to be run in parallel
 - c13ef6887 Disable systemtests on non compatible systems
@@ -158,7 +154,10 @@ e90483b74 Merge pull request #463 from bareos/dev/arogge/master/add-security-md
 
 #Deprecated
 #Removed
+
 #Security
+
+- e90483b74 Add SECURITY.d file: [Pull request #463]
 
 [20.2.1]: https://github.com/bareos/bareos/releases/tag/Release%2F20.2.1
 [20.2.2]: https://github.com/bareos/bareos/releases/tag/Release%2F20.2.2
