@@ -40,6 +40,22 @@ BareosResource::BareosResource()
   return;
 }
 
+ucl::Ucl BareosResource::ExportToUcl() const
+{
+  std::map<std::string, ucl::Ucl> m;
+  m.emplace("Name", resource_name_);
+  m.emplace("Description", description_);
+  m.emplace("ResourceCode", rcode_str_);
+  return ucl::Ucl(m);
+}
+
+void BareosResource::ImportFromUcl(const ucl::Ucl& u)
+{
+  resource_name_ = strdup(u["Name"].string_value().c_str());
+  description_ = strdup(u["Description"].string_value().c_str());
+  rcode_str_ = u["ResourceCode"].string_value();
+}
+
 BareosResource::BareosResource(const BareosResource& other)
 {
   /* do not copy next_ because that is part of the resource chain */
