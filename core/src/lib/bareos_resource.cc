@@ -23,6 +23,8 @@
 
 #include "lib/bareos_resource.h"
 
+#include <ucl++.h>
+
 const char* GetResourceName(void* resource)
 {
   return ((BareosResource*)resource)->resource_name_;
@@ -38,6 +40,13 @@ BareosResource::BareosResource()
     , inherit_content_{0}
 {
   return;
+}
+
+BareosResource::BareosResource(const ucl::Ucl& u)
+{
+  resource_name_ = strdup(u["Name"].string_value().c_str());
+  description_ = strdup(u["Description"].string_value().c_str());
+  rcode_str_ = u["ResourceCode"].string_value();
 }
 
 BareosResource::BareosResource(const BareosResource& other)

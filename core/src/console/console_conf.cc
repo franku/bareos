@@ -35,6 +35,7 @@
 #include "lib/output_formatter_resource.h"
 
 #include <cassert>
+#include <ucl++.h>
 
 namespace console {
 
@@ -92,6 +93,13 @@ static ResourceTable resources[] = {
 
 /* clang-format on */
 
+DirectorResource::DirectorResource(const ucl::Ucl& u) : BareosResource(u)
+{
+  DIRport = u["DIRport"].int_value(0);
+  address = strdup(u["Address"].string_value().c_str());
+  heartbeat_interval = u["HeartbeatInterval"].int_value();
+  password_.value = strdup(u["Password"].string_value().c_str());
+}
 
 static void DumpResource(int type,
                          BareosResource* res,
