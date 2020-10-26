@@ -25,6 +25,7 @@
 #define BAREOS_LIB_BAREOS_RESOURCE_H_
 
 #include "include/bareos.h"
+#include <ucl++.h>
 
 class PoolMem;
 class ConfigurationParser;
@@ -33,7 +34,14 @@ class ResourceItem;
 
 #define MAX_RES_ITEMS 95 /* maximum resource items per BareosResource */
 
-class BareosResource {
+class UclInterface {
+ public:
+  virtual ~UclInterface() = default;
+  virtual ucl::Ucl ExportToUcl() const = 0;
+  virtual void ImportFromUcl(const ucl::Ucl&) = 0;
+};
+
+class BareosResource : public UclInterface {
  public:
   BareosResource* next_; /* Pointer to next resource of this type */
   char* resource_name_;  /* Resource name */
@@ -62,6 +70,10 @@ class BareosResource {
                                  bool hide_sensitive_data,
                                  bool inherited,
                                  bool verbose);
+
+ public:
+  ucl::Ucl ExportToUcl() const override;
+  void ImportFromUcl(const ucl::Ucl&) override;
 };
 
 const char* GetResourceName(void* resource);

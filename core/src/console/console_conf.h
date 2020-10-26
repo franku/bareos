@@ -86,6 +86,10 @@ class DirectorResource
   uint32_t DIRport = 0;          /**< UA server port */
   char* address = nullptr;       /**< UA server address */
   utime_t heartbeat_interval{0}; /**< Interval to send heartbeats to Dir */
+
+ public:
+  ucl::Ucl ExportToUcl() const override;
+  void ImportFromUcl(const ucl::Ucl&) override;
 };
 
 ConfigurationParser* InitConsConfig(const char* configfile, int exit_code);

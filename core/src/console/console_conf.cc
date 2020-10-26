@@ -92,6 +92,28 @@ static ResourceTable resources[] = {
 
 /* clang-format on */
 
+ucl::Ucl DirectorResource::ExportToUcl() const
+{
+  auto u = BareosResource::ExportToUcl();
+  std::map<std::string, ucl::Ucl> m;
+  m.emplace("DirPort", static_cast<int64_t>(DIRport));
+  m.emplace("Address", address);
+  m.emplace("HeartbeatInterval", static_cast<int64_t>(heartbeat_interval));
+  std::string md5{(password_.encoding == p_encoding_md5 ? "[md5]" : "")};
+  std::string pw = md5 + password_.value;
+  m.emplace("Password", pw);
+  u += m;
+  return u;
+}
+
+void DirectorResource::ImportFromUcl(const ucl::Ucl& u)
+{
+  BareosResource::ImportFromUcl(u);
+  DIRport = u["DirPort"].int_value(0);
+  address = strdup(u["Address"].string_value().c_str());
+  heartbeat_interval = u["HeartbeatInterval"].int_value();
+  password_.value = strdup(u["Password"].string_value().c_str());
+}
 
 static void DumpResource(int type,
                          BareosResource* res,

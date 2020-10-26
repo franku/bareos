@@ -43,7 +43,7 @@ else()
   set(CONSOLE_LINK_LIBRARIES console_objects bareos ${Readline_LIBRARY})
 endif()
 
-target_link_libraries(bconsole ${CONSOLE_LINK_LIBRARIES})
+target_link_libraries(bconsole ${CONSOLE_LINK_LIBRARIES} ucl)
 
 install(
   TARGETS bconsole
