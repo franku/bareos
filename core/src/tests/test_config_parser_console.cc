@@ -30,6 +30,9 @@
 #include "console/console_globals.h"
 #include "console/console_conf.h"
 
+#include <fstream>
+#include <ucl++.h>
+
 namespace console {
 
 TEST(ConfigParser, test_console_config)
@@ -49,6 +52,28 @@ TEST(ConfigParser, test_console_config)
 
   TermMsg();         /* Terminate message handler */
   CloseMemoryPool(); /* release free memory in pool */
+}
+
+TEST(ConfigParser, test_console_dir_config_ucl_constructor)
+{
+  std::string path_to_config_file =
+      std::string(RELATIVE_PROJECT_SOURCE_DIR
+                  "/configs/bareos-configparser-tests/bconsole.conf");
+
+  {
+    std::ifstream t(path_to_config_file);
+    std::stringstream buffer;
+    buffer << t.rdbuf();
+
+    std::cout << "Original config: " << std::endl;
+    std::cout << buffer.str() << std::endl;
+  }
+
+  std::string error;
+  auto ucl_imported = ucl::Ucl::parse_from_file(path_to_config_file, error);
+
+  std::cout << "Imported config: " << std::endl;
+  std::cout << ucl_imported.dump(UCL_EMIT_CONFIG) << std::endl;
 }
 
 }  // namespace console

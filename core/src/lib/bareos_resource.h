@@ -33,6 +33,10 @@ class ResourceItem;
 
 #define MAX_RES_ITEMS 95 /* maximum resource items per BareosResource */
 
+namespace ucl {
+  class Ucl;
+}
+
 class BareosResource {
  public:
   BareosResource* next_; /* Pointer to next resource of this type */
@@ -47,6 +51,7 @@ class BareosResource {
 
   BareosResource();
   BareosResource(const BareosResource& other);
+  BareosResource(const ucl::Ucl&);
   BareosResource& operator=(const BareosResource& rhs);
 
   virtual ~BareosResource() = default;

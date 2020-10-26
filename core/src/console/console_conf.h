@@ -81,6 +81,7 @@ class DirectorResource
     , public TlsResource {
  public:
   DirectorResource() = default;
+  DirectorResource(const ucl::Ucl&);
   virtual ~DirectorResource() = default;
 
   uint32_t DIRport = 0;          /**< UA server port */
