@@ -227,6 +227,7 @@ target_link_libraries(
   ${CAM_LIBRARIES}
   ${WINDOWS_LIBRARIES}
   ${JANSSON_LIBRARIES}
+  ucl
 )
 
 install(TARGETS bareos DESTINATION ${libdir})

@@ -18,7 +18,19 @@
 #   02110-1301, USA.
 message("Entering ${CMAKE_CURRENT_SOURCE_DIR}")
 
-add_subdirectory(filed)
+if(NOT EXISTS ${CMAKE_CURRENT_SOURCE_DIR}/ucl/CMakeLists.txt)
+  message(
+    FATAL_ERROR
+    "Please checkout the ucl submodule via \n \"git submodule update --init --recursive\""
+  )
+endif()
+
+set(BUILD_SHARED_LIBS ON CACHE BOOL "Build shared library")
+add_subdirectory(ucl)
+
+include_directories (
+  $<TARGET_PROPERTY:ucl,INTERFACE_INCLUDE_DIRECTORIES>
+)
 
 if(NOT client-only)
   # droplet does not build on solaris because of sys/cdefs.h: No such file or
@@ -50,6 +62,8 @@ if(NOT client-only)
   add_subdirectory(stored)
   add_subdirectory(dird)
 endif()
+
+add_subdirectory(filed)
 
 if(RUN_SYSTEMTESTS_ON_INSTALLED_FILES)
   message(

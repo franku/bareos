@@ -2,3 +2,7 @@
 	path = core/src/droplet
 	url = https://github.com/bareos/Droplet.git
 	branch = bareos-master
+[submodule "core/src/ucl"]
+	path = core/src/ucl
+	url = git@github.com:franku/libucl.git
+	branch = bareos/master
